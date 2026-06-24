@@ -18,7 +18,6 @@ warmth_button_shown = False
 warmth = 50
 mystery_menu = False
 menu_open = False
-lore_btn_clicked = False
 
 upgrades = {"decay": 0, "fertilizer": 0, "safe_zone": 0, "weather": 0}
 current_upgrade_choices = []
@@ -110,7 +109,7 @@ def get_bar_color(value, default_color):
 def update_status():
     
     global water, fertilizer, sunlight, growth_stage, dead, heat_wave_ticks, rainstorm_ticks, health, pest_active, mystery_menu
-    if FINAL_STAGE == growth_stage or mystery_menu == True or menu_open == True or lore_btn_clicked == True:
+    if FINAL_STAGE == growth_stage or mystery_menu or menu_open:
         return
     
     flower_image = page["#flower-image"]
@@ -128,7 +127,7 @@ def update_status():
     health_bar = document.getElementById("health-bar")
     health_bar.style.width = f"{health}%"
     
-    if pest_active == True and sunlight >= 70:
+    if pest_active and sunlight >= 70:
         health_row.style.display = "none"
         pest_active = False
         document.body.classList.remove("health-active")
@@ -138,7 +137,7 @@ def update_status():
         dead = True
         flower_image.src = "flower/DeadPlant.png"
         page["#status"].innerHTML = "Plant has died due to poor health❤️. Restart to try again."
-    elif pest_active == True and dead == False:
+    elif pest_active and not dead:
         page["#status"].innerHTML = "Pests are active🐛! Add sunlight to burn them off."
     elif rainstorm_ticks > 0:
         page["#status"].innerHTML = f"🌧️ Rainstorm! ({rainstorm_ticks}s remaining)"
@@ -178,8 +177,7 @@ def update_status():
 def on_water(event):
     if dead:
         return
-    global water
-    global fertilizer
+    global water, fertilizer
     water = min(water + 5, 100)
     fertilizer = min(fertilizer + 1, 100)
     update_status()
@@ -189,8 +187,7 @@ def on_sunlight(event):
     
     if dead:
         return
-    global sunlight
-    global fertilizer
+    global sunlight, fertilizer
     sunlight = min(sunlight + 5, 100)
     fertilizer = min(fertilizer + 1, 100)
     update_status()
@@ -238,10 +235,10 @@ def on_warmth(event):
 def on_main_menu(event):
     global menu_open
     menu_container = document.getElementById("menu-container")
-    if menu_open == True:
+    if menu_open:
         menu_container.style.display = "none"
         menu_open = False
-    elif menu_open == False:
+    else:
         document.body.classList.remove("winter", "heat-wave", "rainstorm")
         menu_open = True
         menu_container.style.display = "block"
@@ -293,17 +290,17 @@ async def decay_loop():
             warmth_row.style.display = "flex"
             warmth_button_shown = True
             document.body.classList.add("warmth-active")
-        if dead or growth_stage == FINAL_STAGE or mystery_menu == True or lore_btn_clicked == True:
+        if dead or growth_stage == FINAL_STAGE or mystery_menu:
             break
         if menu_open:
             continue
-        if pest_active == False and random() < 0.01 and heat_wave_ticks == 0 and rainstorm_ticks == 0 and growth_stage > 0:
+        if not pest_active and random() < 0.01 and heat_wave_ticks == 0 and rainstorm_ticks == 0 and growth_stage > 0:
             health_bar.style.display = "flex"
             pest_active = True
             document.body.classList.add("health-active")
-        if rainstorm_ticks == 0 and random() < 0.01 and heat_wave_ticks == 0 and pest_active == False:
+        if rainstorm_ticks == 0 and random() < 0.01 and heat_wave_ticks == 0 and not pest_active:
             rainstorm_ticks = 4
-        if heat_wave_ticks == 0 and random() < 0.01 and rainstorm_ticks == 0 and pest_active == False:
+        if heat_wave_ticks == 0 and random() < 0.01 and rainstorm_ticks == 0 and not pest_active:
             heat_wave_ticks = 4
         if water >= 70:
             sunlight = max(sunlight - 3, 0)

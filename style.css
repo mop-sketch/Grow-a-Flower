@@ -8,19 +8,7 @@
 .background::-webkit-scrollbar {
     display: none;
 }
-.access-granted {
-    color: #4caf50;
-    font-weight: bold;
-    text-align: left;
-    margin-top: 10px;
-}
 body.lore-mode {
-    background: linear-gradient(160deg, #c47a7a, #bb7a7a, #924e4e, #5a1010, #b46a6a, #c47a7a);
-    background-size: 400% 400%;
-    background-attachment: fixed;
-    animation: bgDrift 10s ease-in-out infinite;
-}
-.content.lore-mode {
     background: linear-gradient(160deg, #c47a7a, #bb7a7a, #924e4e, #5a1010, #b46a6a, #c47a7a);
     background-size: 400% 400%;
     background-attachment: fixed;
@@ -254,7 +242,7 @@ body.lore-mode {
 }
 .menu-button {
     width: 280px;
-    font-family: 'aurulent-sans', cursive;
+    font-family: 'Walter Turncoat';
     font-size: 18px;
     padding: 14px 20px;
     background: linear-gradient(160deg, #f0fff0, #a8f0a8);
