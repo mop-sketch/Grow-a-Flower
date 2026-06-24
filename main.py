@@ -147,9 +147,9 @@ def select_upgrade(index):
 
 def get_bar_color(value, default_color):
     safe_min, safe_max = safe_zone()
-    if value < safe_min or value > safe_max:
+    if value <= safe_min + 5 or value >= safe_max - 5:
         return "#ff7867"
-    elif value <= safe_min + 5 or value >= safe_max - 5:
+    elif value <= safe_min + 15 or value >= safe_max - 15:
         return "#fff569"
     else:
         return default_color
