@@ -865,16 +865,16 @@ body.lore-mode {
         transform: translate(-50%, -56%);
     }
     .main-menu-button {
-        width: 55px;
-        height: 55px;
-        font-size: 26px;
+        width: 42px;
+        height: 42px;
+        font-size: 20px;
         top: 4%;
-        left: 83%;
+        left: 85%;
     }
     .music-button {
-        width: 55px;
-        height: 55px;
-        font-size: 26px;
+        width: 42px;
+        height: 42px;
+        font-size: 20px;
         top: auto;
         bottom: 8px;
     }
@@ -893,15 +893,31 @@ body.lore-mode {
     .upgrade-menu {
         width: 90vw;
         height: auto;
-        padding: 16px;
+        padding: 16px 12px;
+        display: flex;
+        flex-direction: column;
+    }
+    .option-container {
+        position: static;
+        transform: none;
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: 10px;
     }
     .upgrade-option,
     .upgrade-option1,
     .upgrade-option2 {
-        padding: 14px 8px;
+        width: 30%;
+        height: auto;
+        min-height: 110px;
+        padding: 10px 6px;
+        font-size: 13px;
     }
     .upgrade-button {
-        font-size: 16px;
-        padding: 8px 16px;
+        font-size: 14px;
+        padding: 6px 10px;
     }
 }
