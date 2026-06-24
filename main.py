@@ -131,6 +131,7 @@ def update_status():
     if pest_active == True and sunlight >= 70:
         health_row.style.display = "none"
         pest_active = False
+        document.body.classList.remove("health-active")
     if heat_wave_ticks > 0:
         page["#status"].innerHTML = f"🌡️ Heat wave! ({heat_wave_ticks}s remaining)"
     elif health == 0:
@@ -299,6 +300,7 @@ async def decay_loop():
         if pest_active == False and random() < 0.01 and heat_wave_ticks == 0 and rainstorm_ticks == 0 and growth_stage > 0:
             health_bar.style.display = "flex"
             pest_active = True
+            document.body.classList.add("health-active")
         if rainstorm_ticks == 0 and random() < 0.01 and heat_wave_ticks == 0 and pest_active == False:
             rainstorm_ticks = 4
         if heat_wave_ticks == 0 and random() < 0.01 and rainstorm_ticks == 0 and pest_active == False:
