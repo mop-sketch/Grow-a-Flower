@@ -22,6 +22,53 @@ menu_open = False
 upgrades = {"decay": 0, "fertilizer": 0, "safe_zone": 0, "weather": 0}
 current_upgrade_choices = []
 
+# Difficulty presets. "easy" matches the original tuning.
+# "medium" is overall harsher. "hard" is the same as medium except plants
+# take longer to advance through each stage (slower fertilizer, higher thresholds).
+DIFFICULTIES = {
+    "easy": {
+        "decay": 2,
+        "fert_gen": 3,
+        "weather_intensity": 4,
+        "event_chance": 0.01,
+        "weather_duration": 4,
+        "pest_drain": 3,
+        "fert_threshold_start": 30,
+        "fert_threshold": 70,
+    },
+    "medium": {
+        "decay": 3,
+        "fert_gen": 2,
+        "weather_intensity": 5,
+        "event_chance": 0.018,
+        "weather_duration": 5,
+        "pest_drain": 4,
+        "fert_threshold_start": 30,
+        "fert_threshold": 70,
+    },
+    "hard": {
+        "decay": 3,
+        "fert_gen": 1,
+        "weather_intensity": 5,
+        "event_chance": 0.018,
+        "weather_duration": 5,
+        "pest_drain": 4,
+        "fert_threshold_start": 45,
+        "fert_threshold": 95,
+    },
+}
+# Active tuning. Replaced when the player picks a difficulty; defaults to easy.
+settings = DIFFICULTIES["easy"]
+
+
+def fert_threshold():
+    return settings["fert_threshold_start"] if growth_stage == 0 else settings["fert_threshold"]
+
+def safe_zone():
+    safe_min = max(35 - upgrades["safe_zone"] * 5, 15)
+    safe_max = min(70 + upgrades["safe_zone"] * 5, 90)
+    return safe_min, safe_max
+
 UPGRADE_INFO = {
     "decay":      ("Slow Decay",       "Water, sunlight & warmth decay −0.5/tick per level"),
     "fertilizer": ("Boost Fertilizer", "Fertilizer generation +1/tick per level"),
@@ -99,9 +146,10 @@ def select_upgrade(index):
 
 
 def get_bar_color(value, default_color):
-    if value <= 30 or value >= 75:
+    safe_min, safe_max = safe_zone()
+    if value < safe_min or value > safe_max:
         return "#ff7867"
-    elif value <= 40 or value >= 65:
+    elif value <= safe_min + 5 or value >= safe_max - 5:
         return "#fff569"
     else:
         return default_color
@@ -141,9 +189,9 @@ def update_status():
         page["#status"].innerHTML = "Pests are active🐛! Add sunlight to burn them off."
     elif rainstorm_ticks > 0:
         page["#status"].innerHTML = f"🌧️ Rainstorm! ({rainstorm_ticks}s remaining)"
-    elif fertilizer >= (30 if growth_stage == 0 else 70) and (water >= 40 and water <= 65) and (sunlight >= 40 and sunlight <= 65):
+    elif fertilizer >= fert_threshold() and (water >= 40 and water <= 65) and (sunlight >= 40 and sunlight <= 65):
         page["#status"].innerHTML = "Fertilizer at safe levels✅"
-    elif fertilizer >= (30 if growth_stage == 0 else 70) and (water <= 40 or water >= 65 or sunlight <= 40 or sunlight >= 65):
+    elif fertilizer >= fert_threshold() and (water <= 40 or water >= 65 or sunlight <= 40 or sunlight >= 65):
         page["#status"].innerHTML = "Fertillizer ready, but other conditions are not optimal❌"
     else:
         page["#status"].innerHTML = f"Fertilizer is at unsafe levels❌"
@@ -199,9 +247,8 @@ def on_fertilizer(event):
     global fertilizer, water, sunlight, mystery_menu
     lore_btn = document.getElementById("lore-btn")
     control = document.getElementById("controls-container")
-    threshold = 30 if growth_stage == 0 else 70
-    safe_min = max(35 - upgrades["safe_zone"] * 5, 15)
-    safe_max = min(70 + upgrades["safe_zone"] * 5, 90)
+    threshold = fert_threshold()
+    safe_min, safe_max = safe_zone()
     if fertilizer >= threshold and (water >= safe_min and water <= safe_max) and (sunlight >= safe_min and sunlight <= safe_max):
         advance_stage()
         if growth_stage == FINAL_STAGE:
@@ -294,28 +341,28 @@ async def decay_loop():
             break
         if menu_open:
             continue
-        if not pest_active and random() < 0.01 and heat_wave_ticks == 0 and rainstorm_ticks == 0 and growth_stage > 0:
+        if not pest_active and random() < settings["event_chance"] and heat_wave_ticks == 0 and rainstorm_ticks == 0 and growth_stage > 0:
             health_bar.style.display = "flex"
             pest_active = True
             document.body.classList.add("health-active")
-        if rainstorm_ticks == 0 and random() < 0.01 and heat_wave_ticks == 0 and not pest_active:
-            rainstorm_ticks = 4
-        if heat_wave_ticks == 0 and random() < 0.01 and rainstorm_ticks == 0 and not pest_active:
-            heat_wave_ticks = 4
+        if rainstorm_ticks == 0 and random() < settings["event_chance"] and heat_wave_ticks == 0 and not pest_active:
+            rainstorm_ticks = settings["weather_duration"]
+        if heat_wave_ticks == 0 and random() < settings["event_chance"] and rainstorm_ticks == 0 and not pest_active:
+            heat_wave_ticks = settings["weather_duration"]
         if water >= 70:
             sunlight = max(sunlight - 3, 0)
         if sunlight >= 70:
             water = max(water - 3, 0)
         if pest_active:
-            health = max(health - 3, 0)
-        weather_intensity = max(4 - upgrades["weather"], 1)
+            health = max(health - settings["pest_drain"], 0)
+        weather_intensity = max(settings["weather_intensity"] - upgrades["weather"], 1)
         if heat_wave_ticks > 0:
             sunlight = min(sunlight + weather_intensity, 100)
             water = max(water - weather_intensity, 0)
             heat_wave_ticks -= 1
             if growth_stage >= 3:
                 warmth = min(warmth + weather_intensity, 100)
-        decay = max(2 - upgrades["decay"] * 0.5, 0.25)
+        decay = max(settings["decay"] - upgrades["decay"] * 0.5, 0.25)
         if growth_stage >= 3:
             warmth = max(warmth - decay, 0)
         if rainstorm_ticks > 0:
@@ -324,8 +371,28 @@ async def decay_loop():
             rainstorm_ticks -= 1
         water = max(water - decay, 0)
         if growth_stage < FINAL_STAGE:
-            fertilizer = min(fertilizer + 3 + upgrades["fertilizer"], 100)
+            fertilizer = min(fertilizer + settings["fert_gen"] + upgrades["fertilizer"], 100)
         sunlight = max(sunlight - decay, 0)
         update_status()
 
-asyncio.ensure_future(decay_loop())
+
+def start_game(level):
+    global settings
+    settings = DIFFICULTIES[level]
+    document.getElementById("difficulty-container").style.display = "none"
+    asyncio.ensure_future(decay_loop())
+
+
+@when("click", "#easy-btn")
+def on_easy(event):
+    start_game("easy")
+
+
+@when("click", "#medium-btn")
+def on_medium(event):
+    start_game("medium")
+
+
+@when("click", "#hard-btn")
+def on_hard(event):
+    start_game("hard")
