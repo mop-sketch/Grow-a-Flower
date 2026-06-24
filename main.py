@@ -141,9 +141,9 @@ def update_status():
         page["#status"].innerHTML = "Pests are active🐛! Add sunlight to burn them off."
     elif rainstorm_ticks > 0:
         page["#status"].innerHTML = f"🌧️ Rainstorm! ({rainstorm_ticks}s remaining)"
-    elif fertilizer >= (50 if growth_stage == 0 else 100) and (water >= 40 and water <= 65) and (sunlight >= 40 and sunlight <= 65):
+    elif fertilizer >= (30 if growth_stage == 0 else 70) and (water >= 40 and water <= 65) and (sunlight >= 40 and sunlight <= 65):
         page["#status"].innerHTML = "Fertilizer at safe levels✅"
-    elif fertilizer >= (50 if growth_stage == 0 else 100) and (water <= 40 or water >= 65 or sunlight <= 40 or sunlight >= 65):
+    elif fertilizer >= (30 if growth_stage == 0 else 70) and (water <= 40 or water >= 65 or sunlight <= 40 or sunlight >= 65):
         page["#status"].innerHTML = "Fertillizer ready, but other conditions are not optimal❌"
     else:
         page["#status"].innerHTML = f"Fertilizer is at unsafe levels❌"
@@ -163,7 +163,7 @@ def update_status():
     else:
         document.body.classList.remove("winter")
     
-    if water <= 25 or sunlight <= 25 or water >=80 or sunlight >= 80 or (warmth <= 25 or warmth >= 80):
+    if water <= 15 or sunlight <= 15 or water >= 90 or sunlight >= 90 or (warmth <= 15 or warmth >= 90):
         dead = True
         flower_image.src = "flower/DeadPlant.png"
         document.body.classList.remove("heat-wave", "rainstorm", "winter")
@@ -201,9 +201,9 @@ def on_fertilizer(event):
     global fertilizer, water, sunlight, mystery_menu
     lore_btn = document.getElementById("lore-btn")
     control = document.getElementById("controls-container")
-    threshold = 50 if growth_stage == 0 else 100
-    safe_min = max(40 - upgrades["safe_zone"] * 5, 25)
-    safe_max = min(65 + upgrades["safe_zone"] * 5, 80)
+    threshold = 30 if growth_stage == 0 else 70
+    safe_min = max(35 - upgrades["safe_zone"] * 5, 15)
+    safe_max = min(70 + upgrades["safe_zone"] * 5, 90)
     if fertilizer >= threshold and (water >= safe_min and water <= safe_max) and (sunlight >= safe_min and sunlight <= safe_max):
         advance_stage()
         if growth_stage == FINAL_STAGE:
@@ -223,8 +223,8 @@ def on_fertilizer(event):
             update_status()
             show_upgrade_menu()
     else:
-        water = max(water - 100, 0)
-        sunlight = max(sunlight - 100, 0)
+        water = max(water - 50, 0)
+        sunlight = max(sunlight - 50, 0)
         update_status()
 @when("click", "#warmth-btn") 
 def on_warmth(event):
@@ -295,19 +295,19 @@ async def decay_loop():
             break
         if menu_open:
             continue
-        if pest_active == False and random() < 0.02 and heat_wave_ticks == 0 and rainstorm_ticks == 0 and growth_stage > 0:
+        if pest_active == False and random() < 0.01 and heat_wave_ticks == 0 and rainstorm_ticks == 0 and growth_stage > 0:
             health_bar.style.display = "flex"
             pest_active = True
-        if rainstorm_ticks == 0 and random() < 0.02 and heat_wave_ticks == 0 and pest_active == False:
-            rainstorm_ticks = 5
-        if heat_wave_ticks == 0 and random() < 0.02 and rainstorm_ticks == 0 and pest_active == False:
-            heat_wave_ticks = 5
-        if water >= 60:
-            sunlight = max(sunlight - 4, 0)
-        if sunlight >= 60:
-            water = max(water - 4, 0)
+        if rainstorm_ticks == 0 and random() < 0.01 and heat_wave_ticks == 0 and pest_active == False:
+            rainstorm_ticks = 4
+        if heat_wave_ticks == 0 and random() < 0.01 and rainstorm_ticks == 0 and pest_active == False:
+            heat_wave_ticks = 4
+        if water >= 70:
+            sunlight = max(sunlight - 3, 0)
+        if sunlight >= 70:
+            water = max(water - 3, 0)
         if pest_active:
-            health = max(health - 5, 0)
+            health = max(health - 3, 0)
         weather_intensity = max(4 - upgrades["weather"], 1)
         if heat_wave_ticks > 0:
             sunlight = min(sunlight + weather_intensity, 100)
@@ -315,7 +315,7 @@ async def decay_loop():
             heat_wave_ticks -= 1
             if growth_stage >= 3:
                 warmth = min(warmth + weather_intensity, 100)
-        decay = max(2 - upgrades["decay"] * 0.5, 0.5)
+        decay = max(2 - upgrades["decay"] * 0.5, 0.25)
         if growth_stage >= 3:
             warmth = max(warmth - decay, 0)
         if rainstorm_ticks > 0:
