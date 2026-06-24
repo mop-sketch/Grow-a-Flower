@@ -293,6 +293,24 @@ body.lore-mode {
     color: #2e5a2e;
     letter-spacing: 0.4px;
 }
+.medium {
+    background: linear-gradient(160deg, #fffacd, #ffe57f);
+    border: 2.5px solid #e6d65c;
+}
+.medium:hover {
+    background: linear-gradient(160deg, #fff68f, #ffed61);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px) scale(1.03);
+}
+.hard:hover {
+    background: linear-gradient(160deg, #ffb4b4, #ff5c5c);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px) scale(1.03);
+}
+.hard {
+    background: linear-gradient(160deg, #ffd4d4, #ff7d7d);
+    border: 2.5px solid #e65c5c;
+}
 .upgrade-container {
     position: absolute;
     font-family: 'Walter Turncoat', cursive;
