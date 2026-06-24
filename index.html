@@ -1,0 +1,78 @@
+<head>
+    <title>Grow a Flower</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2026.6.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2026.6.1/core.js"></script>
+    <script type="py" src="./main.py"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Walter+Turncoat&display=swap" rel="stylesheet">
+
+</head>
+<body class="container" >
+    <p id="spring1" class="spring1" style="display:none;">⚙</p>
+    <p id="spring2" class="spring2" style="display:none;">⚙</p>
+    <audio id="win-audio" src="music and images/Winning-sound.mp3"></audio>
+    <audio id="dark-audio" src="music and images/Dark-music.mp3" loop></audio>
+    <audio id="music-audio" src="music and images/Peaceful-Music.mp3" loop></audio>
+    <audio id="grow-audio" src="music and images/Plant Growing.mp3"></audio>
+    <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
+    <h1 class="title" data-text="Grow a Flower">Grow a Flower</h1>
+    <div class="flower" id="flower">
+        <img src="flower/Seed.png" alt="Flower" id="flower-image">
+    </div>
+    <p id="status">Fertilizer is at unsafe levels&#x274C;</p>
+    <div id="controls-container">
+        <div class="meters">
+            <div class="meter-row">
+                <span class="meter-label">Water&#128167;</span>
+                <div class="meter-bar"><div id="water-bar" class="meter-fill water-fill" style="width:50%"></div></div>
+            </div>
+            <div class="meter-row">
+                <span class="meter-label">Sunlight&#9728;&#65039;</span>
+                <div class="meter-bar"><div id="sun-bar" class="meter-fill sun-fill" style="width:50%"></div></div>
+            </div>
+            <div id="warmth-row" class="warmth-row">
+                <span class="meter-label">Warmth&#128293;&#65039;</span>
+                <div class="meter-bar"><div id="warmth-bar" class="meter-fill warmth-fill" style="width:50%"></div></div>
+            </div>
+        </div>
+        <div class="buttons-container">
+            <button id="water-btn" class="water-button">Water</button>
+            <button id="sun-btn" class="sun-button">Sunlight</button>
+            <button id="warmth-btn" class="warmth-button">Warmth</button>
+        </div>
+        <div class="health-row" id="health-row">
+            <span class="health-label">Health&#10084;&#65039;</span>
+            <div class="health-bar"><div id="health-bar" class="meter-fill health-fill" style="width:100%"></div></div>
+        </div>
+        <button id="fertilizer-btn" class="fertilizer-button">Fertilizer</button>
+    </div>
+    <div id="upgrade-container" class="upgrade-container">
+        <div class="upgrade-menu" id="upgrade-menu">
+            <h2 style="margin:0 0 4px 0;text-align:center;">&#127807; Stage Reward!</h2>
+            <p style="text-align:center;margin:0 0 8px 0;font-size:13px;color:#7a5c2e;">Choose one upgrade for your plant</p>
+            <div class="option-container">
+                <div class="upgrade-option" id="upgrade-option"></div>
+                <div class="upgrade-option1" id="upgrade-option1"></div>
+                <div class="upgrade-option2" id="upgrade-option2"></div>
+            </div>
+        </div>
+    </div>
+    <div class="menu-container" id="menu-container">
+        <div id="menu" class="menu">
+            <div class="menu-title-area">
+                <span class="menu-leaf">&#127800;</span>
+                <span class="menu-title-text">Grow a Flower</span>
+                <span class="menu-leaf">&#127800;</span>
+            </div>
+            <hr class="menu-divider">
+            <button id="learn-more-btn" onclick="window.location.href='learn more.html'" class="menu-button"> Learn More</button>
+            <button id="restart-btn" class="menu-button"> Restart</button>
+            <button id="lore-btn" class="menu-button"> ???</button>
+        </div>
+    </div>
+    <button id="main-menu-btn" class="main-menu-button">&equiv;</button>
+    <button id="music-btn" onclick="toggleMusic()" class="music-button">&#x1F507;</button>
+</body>
