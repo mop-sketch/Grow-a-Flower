@@ -759,3 +759,115 @@ body.lore-mode {
     transform: rotate(360deg) scale(1.2);
     background: #f5f5f5;
 }
+
+/* ── Mobile / Phone styles ── */
+@media (max-width: 600px) {
+    /* Learn More page */
+    .content {
+        width: 95%;
+        margin: 15px auto;
+        padding: 15px;
+    }
+    .heading {
+        font-size: 36px;
+    }
+    .header {
+        font-size: 20px;
+    }
+    .main-text {
+        font-size: 17px;
+        line-height: 1.6;
+    }
+    .Q-and-A {
+        padding: 12px;
+    }
+    .apple-link {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+    .password {
+        font-size: 18px;
+        padding: 12px;
+    }
+    .submit {
+        font-size: 18px;
+        padding: 12px 20px;
+        width: 100%;
+    }
+    .footer {
+        font-size: 14px;
+    }
+
+    /* Main game page */
+    .title {
+        font-size: 42px;
+        letter-spacing: 2px;
+    }
+    #flower-image {
+        width: 240px;
+        height: 240px;
+    }
+    #status {
+        font-size: 20px;
+        white-space: normal;
+        top: 70px;
+    }
+    .meter-label,
+    .health-label {
+        font-size: 16px;
+        width: 90px;
+    }
+    .meter-bar,
+    .health-bar {
+        width: 170px;
+        height: 22px;
+    }
+    .buttons-container {
+        width: 90vw;
+        height: 90px;
+    }
+    .water-button,
+    .sun-button,
+    .warmth-button {
+        width: 90px;
+        height: 70px;
+        font-size: 18px;
+    }
+    .fertilizer-button {
+        height: 60px;
+        font-size: 18px;
+        padding: 18px 24px;
+    }
+    .main-menu-button,
+    .music-button {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+    }
+    .menu {
+        width: 88vw;
+        padding: 28px 20px 24px;
+    }
+    .menu-button {
+        width: 90%;
+        font-size: 22px;
+        padding: 18px 20px;
+    }
+    .menu-title-area {
+        font-size: 22px;
+    }
+    .upgrade-menu {
+        width: 90vw;
+        height: auto;
+        padding: 16px;
+    }
+    .upgrade-option,
+    .upgrade-option1,
+    .upgrade-option2 {
+        padding: 14px 8px;
+    }
+    .upgrade-button {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+}
