@@ -146,20 +146,18 @@ def select_upgrade(index):
 
 
 def get_bar_color(value, default_color):
-    safe_min, safe_max = safe_zone()
-    if value <= safe_min + 5 or value >= safe_max - 5:
+    if value >= 75 or value <= 25:
         return "#ff7867"
-    elif value <= safe_min + 15 or value >= safe_max - 15:
+    elif value >= 60 or value <= 40:
         return "#fff569"
     else:
         return default_color
 
 def update_status():
-    
-    global water, fertilizer, sunlight, growth_stage, dead, heat_wave_ticks, rainstorm_ticks, health, pest_active, mystery_menu
+    global water, fertilizer, sunlight, growth_stage, dead, heat_wave_ticks, rainstorm_ticks, health, pest_active, mystery_menu, safe_min, safe_max
     if FINAL_STAGE == growth_stage or mystery_menu or menu_open:
         return
-    
+    safe_min, safe_max = safe_zone()
     flower_image = page["#flower-image"]
     water_bar = document.getElementById("water-bar")
     sun_bar = document.getElementById("sun-bar")
@@ -189,9 +187,9 @@ def update_status():
         page["#status"].innerHTML = "Pests are active🐛! Add sunlight to burn them off."
     elif rainstorm_ticks > 0:
         page["#status"].innerHTML = f"🌧️ Rainstorm! ({rainstorm_ticks}s remaining)"
-    elif fertilizer >= fert_threshold() and (water >= 40 and water <= 65) and (sunlight >= 40 and sunlight <= 65):
+    elif fertilizer >= fert_threshold() and (water >= safe_min and water <= safe_max) and (sunlight >= safe_min and sunlight <= safe_max):
         page["#status"].innerHTML = "Fertilizer at safe levels✅"
-    elif fertilizer >= fert_threshold() and (water <= 40 or water >= 65 or sunlight <= 40 or sunlight >= 65):
+    elif fertilizer >= fert_threshold() and (water <= safe_min or water >= safe_max or sunlight <= safe_min or sunlight >= safe_max):
         page["#status"].innerHTML = "Fertillizer ready, but other conditions are not optimal❌"
     else:
         page["#status"].innerHTML = f"Fertilizer is at unsafe levels❌"
@@ -211,7 +209,7 @@ def update_status():
     else:
         document.body.classList.remove("winter")
     
-    if water <= 15 or sunlight <= 15 or water >= 90 or sunlight >= 90 or (warmth <= 15 or warmth >= 90):
+    if water <= 20 or sunlight <= 20 or water >= 80 or sunlight >= 80 or (warmth <= 20 or warmth >= 80):
         dead = True
         flower_image.src = "flower/DeadPlant.png"
         document.body.classList.remove("heat-wave", "rainstorm", "winter")
