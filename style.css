@@ -799,32 +799,50 @@ body.lore-mode {
     }
 
     /* Main game page */
+    .container {
+        height: 100vh;
+        overflow: hidden;
+    }
     .title {
-        font-size: 42px;
+        font-size: 38px;
         letter-spacing: 2px;
     }
+    .flower {
+        top: 33%;
+    }
     #flower-image {
-        width: 240px;
-        height: 240px;
+        width: 200px;
+        height: 200px;
     }
     #status {
-        font-size: 20px;
+        font-size: 17px;
         white-space: normal;
-        top: 70px;
+        overflow: visible;
+        text-overflow: clip;
+        top: 68px;
+        padding: 0 70px;
+        line-height: 1.4;
     }
     .meter-label,
     .health-label {
-        font-size: 16px;
-        width: 90px;
+        font-size: 15px;
+        width: 85px;
     }
     .meter-bar,
     .health-bar {
-        width: 170px;
-        height: 22px;
+        width: 160px;
+        height: 20px;
+    }
+    .meters {
+        bottom: 72px;
     }
     .buttons-container {
         width: 90vw;
         height: 90px;
+        top: 60%;
+    }
+    .buttons-container:hover {
+        top: 59.5%;
     }
     .water-button,
     .sun-button,
@@ -834,15 +852,30 @@ body.lore-mode {
         font-size: 18px;
     }
     .fertilizer-button {
+        position: absolute;
+        top: 72%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         height: 60px;
         font-size: 18px;
-        padding: 18px 24px;
+        padding: 14px 24px;
     }
-    .main-menu-button,
+    .fertilizer-button:hover {
+        transform: translate(-50%, -56%);
+    }
+    .main-menu-button {
+        width: 55px;
+        height: 55px;
+        font-size: 26px;
+        top: 4%;
+        left: 83%;
+    }
     .music-button {
-        width: 60px;
-        height: 60px;
-        font-size: 28px;
+        width: 55px;
+        height: 55px;
+        font-size: 26px;
+        top: auto;
+        bottom: 8px;
     }
     .menu {
         width: 88vw;
