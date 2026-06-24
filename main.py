@@ -291,6 +291,7 @@ async def decay_loop():
             warmth_btn.style.display = "block"
             warmth_row.style.display = "flex"
             warmth_button_shown = True
+            document.body.classList.add("warmth-active")
         if dead or growth_stage == FINAL_STAGE or mystery_menu == True or lore_btn_clicked == True:
             break
         if menu_open:

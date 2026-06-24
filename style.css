@@ -920,4 +920,41 @@ body.lore-mode {
         font-size: 14px;
         padding: 6px 10px;
     }
+
+    /* Stage 3+: compact layout when warmth UI is active */
+    body.warmth-active .flower {
+        top: 30%;
+    }
+    body.warmth-active .buttons-container {
+        top: 57%;
+        height: 78px;
+    }
+    body.warmth-active .buttons-container:hover {
+        top: 56.5%;
+    }
+    body.warmth-active .water-button,
+    body.warmth-active .sun-button,
+    body.warmth-active .warmth-button {
+        width: 85px;
+        height: 62px;
+        font-size: 15px;
+        padding: 6px 4px;
+    }
+    body.warmth-active .fertilizer-button {
+        top: 70%;
+        height: 54px;
+        font-size: 16px;
+        padding: 10px 18px;
+    }
+    body.warmth-active .meter-row,
+    body.warmth-active .warmth-row {
+        margin: 5px 0;
+    }
+    body.warmth-active .meter-bar,
+    body.warmth-active .health-bar {
+        height: 14px;
+    }
+    body.warmth-active .meters {
+        bottom: 50px;
+    }
 }
