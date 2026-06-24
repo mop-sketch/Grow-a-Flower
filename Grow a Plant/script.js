@@ -83,10 +83,10 @@ function toggleMusic() {
     const musicBtn = document.getElementById("music-btn");
     if (musicAudio.paused) {
         musicAudio.play();
-        musicBtn.textContent = "🔊";
+        musicBtn.textContent = "\u{1F50A}";
     } else {
         musicAudio.pause();
-        musicBtn.textContent = "🔇";
+        musicBtn.textContent = "\u{1F507}";
     }
 }
 function validate() {
