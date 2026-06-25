@@ -41,7 +41,6 @@ body.lore-mode {
     transition: width 0.3s ease, left 0.3s ease, background-color 0.3s ease;
 }
 .fertilizer-notification {
-    display: none;
     pointer-events: none;
     top: 25%;
     position: fixed;
@@ -53,16 +52,15 @@ body.lore-mode {
     color: #fff;
     font-family: 'Walter Turncoat', cursive;
     border-radius: 100%;
-    border: 4px dashed #74a774;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    border: 4px dashed #74a774;;
+    box-shadow:  0 0 20px rgba(134, 255, 150, 0.5);
+    transition: filter 1s ease;
+    filter: blur(10px) opacity(0);
     animation: notificationPulse 1.5s linear infinite;
-}
-.fertilizer-notification.show {
-    display: block;
 }
 @keyframes notificationPulse {
     0%   { transform: translateX(-50%) scale(1) rotate(0deg); opacity: 1; }
-    50%  { transform: translateX(-50%) scale(1.2) rotate(40deg); border: 4px dashed #aaecaa; }
+    50%  { transform: translateX(-50%) scale(1.2) rotate(40deg); border: 4px dashed #aaecaa; box-shadow:  0 0 30px 10px rgba(134, 255, 150, 0.5);}
     100% { transform: translateX(-50%) scale(1) rotate(80deg); opacity: 1; }
 }
 .apple-link{
@@ -856,6 +854,11 @@ body.lore-mode {
         width: 95%;
         margin: 15px auto;
         padding: 15px;
+    }
+    .fertilizer-notification {
+        top: 10px;
+        width: 250px;
+        height: 250px;
     }
     .heading {
         font-size: 36px;

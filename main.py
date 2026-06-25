@@ -213,7 +213,7 @@ def update_status():
     sun_bar.style.width = f"{sunlight}%"
     health_bar = document.getElementById("health-bar")
     health_bar.style.width = f"{health}%"
-    
+
     if pest_active and sunlight >= 70:
         health_row.style.display = "none"
         pest_active = False
@@ -266,7 +266,7 @@ def update_status():
         flower_image.src = STAGES[growth_stage]
 
     ring = document.querySelector(".fertilizer-notification")
-    if fertilizer >= fert_threshold() and (water >= safe_min and water <= safe_max) and (sunlight >= safe_min and sunlight <= safe_max) and (rainstorm_ticks > 0 or heat_wave_ticks > 0 or pest_active):
+    if fertilizer >= fert_threshold() and (water >= safe_min and water <= safe_max) and (sunlight >= safe_min and sunlight <= safe_max) and not (rainstorm_ticks > 0 or heat_wave_ticks > 0 or pest_active):
         ring.style = " filter: blur(0px) opacity(1);"
     else:
         ring.style = " filter: blur(10px) opacity(0);"
