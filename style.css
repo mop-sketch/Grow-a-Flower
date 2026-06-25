@@ -40,6 +40,31 @@ body.lore-mode {
     z-index: 2;
     transition: width 0.3s ease, left 0.3s ease, background-color 0.3s ease;
 }
+.fertilizer-notification {
+    display: none;
+    pointer-events: none;
+    top: 25%;
+    position: fixed;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    transform: translateX(-50%);
+    background-color: #ff6b6b00;
+    color: #fff;
+    font-family: 'Walter Turncoat', cursive;
+    border-radius: 100%;
+    border: 4px dashed #74a774;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    animation: notificationPulse 1.5s linear infinite;
+}
+.fertilizer-notification.show {
+    display: block;
+}
+@keyframes notificationPulse {
+    0%   { transform: translateX(-50%) scale(1) rotate(0deg); opacity: 1; }
+    50%  { transform: translateX(-50%) scale(1.2) rotate(40deg); border: 4px dashed #aaecaa; }
+    100% { transform: translateX(-50%) scale(1) rotate(80deg); opacity: 1; }
+}
 .apple-link{
     padding: 3px;
     border-radius: 8px;

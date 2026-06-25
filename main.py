@@ -252,6 +252,8 @@ def update_status():
         document.body.classList.remove("winter")
     
     if water <= 20 or sunlight <= 20 or water >= 80 or sunlight >= 80 or (warmth <= 20 or warmth >= 80):
+        ring = document.querySelector(".fertilizer-notification")
+        ring.style = " filter: blur(10px) opacity(0);"
         dead = True
         save_high_score()
         flower_image.src = "flower/DeadPlant.png"
@@ -262,6 +264,12 @@ def update_status():
             page["#status"].innerHTML = f"Plant has failed to germinate. Score: {final_score()} (Best: {get_best_score()})"
     else:
         flower_image.src = STAGES[growth_stage]
+
+    ring = document.querySelector(".fertilizer-notification")
+    if fertilizer >= fert_threshold() and (water >= safe_min and water <= safe_max) and (sunlight >= safe_min and sunlight <= safe_max) and (rainstorm_ticks > 0 or heat_wave_ticks > 0 or pest_active):
+        ring.style = " filter: blur(0px) opacity(1);"
+    else:
+        ring.style = " filter: blur(10px) opacity(0);"
 @when("click", "#water-btn")
 def on_water(event):
     if dead:
@@ -288,11 +296,13 @@ def on_fertilizer(event):
     global fertilizer, water, sunlight, mystery_menu
     lore_btn = document.getElementById("lore-btn")
     control = document.getElementById("controls-container")
+    ring = document.querySelector(".fertilizer-notification")
     threshold = fert_threshold()
     safe_min, safe_max = safe_zone()
     if fertilizer >= threshold and (water >= safe_min and water <= safe_max) and (sunlight >= safe_min and sunlight <= safe_max):
         advance_stage()
-        if growth_stage == FINAL_STAGE:
+        ring.style = " filter: blur(10px) opacity(0);"
+        if growth_stage == FINAL_STAGE: 
             lore_btn.innerText = "Touch the flower"
             win_audio = document.getElementById("win-audio")
             win_audio.currentTime = 0
