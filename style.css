@@ -33,11 +33,12 @@ body.lore-mode {
     left: 35%;
     width: 30%;
     box-sizing: border-box;
-    border-left: 2px dashed #3f7a33;
-    border-right: 2px dashed #3f7a33;
-    background-color: rgba(108, 243, 142, 0.25);
+    border-left: 2px dotted #8a8a8a;
+    border-right: 2px dotted #8a8a8a;
+    background-color: rgba(168, 168, 168, 0.25);
     pointer-events: none;
     z-index: 2;
+    transition: width 0.3s ease, left 0.3s ease, background-color 0.3s ease;
 }
 .apple-link{
     padding: 3px;
