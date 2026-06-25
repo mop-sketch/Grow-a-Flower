@@ -26,6 +26,19 @@ body.lore-mode {
     50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+.fertilizer-safe-zone {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 35%;
+    width: 30%;
+    box-sizing: border-box;
+    border-left: 2px dashed #3f7a33;
+    border-right: 2px dashed #3f7a33;
+    background-color: rgba(108, 243, 142, 0.25);
+    pointer-events: none;
+    z-index: 2;
+}
 .apple-link{
     padding: 3px;
     border-radius: 8px;
@@ -516,6 +529,7 @@ body.lore-mode {
     font-weight: bold;
 }
 .meter-bar {
+    position: relative;
     width: 200px;
     height: 18px;
     background-color: #ddd;

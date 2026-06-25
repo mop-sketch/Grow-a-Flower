@@ -194,6 +194,11 @@ def update_status():
         return
     update_score_display()
     safe_min, safe_max = safe_zone()
+    safe_bands = document.querySelectorAll(".fertilizer-safe-zone")
+    for i in range(safe_bands.length):
+        band = safe_bands.item(i)
+        band.style.left = f"{safe_min}%"
+        band.style.width = f"{safe_max - safe_min}%"
     flower_image = page["#flower-image"]
     water_bar = document.getElementById("water-bar")
     sun_bar = document.getElementById("sun-bar")
