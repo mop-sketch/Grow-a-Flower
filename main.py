@@ -72,8 +72,8 @@ def fert_threshold():
     return settings["fert_threshold_start"] if growth_stage == 0 else settings["fert_threshold"]
 
 def safe_zone():
-    safe_min = max(35 - upgrades["safe_zone"] * 5, 15)
-    safe_max = min(70 + upgrades["safe_zone"] * 5, 90)
+    safe_min = max(35 - upgrades["safe_zone"] * 5, 20)
+    safe_max = min(65 + upgrades["safe_zone"] * 5, 80)
     return safe_min, safe_max
 
 
