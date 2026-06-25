@@ -186,6 +186,7 @@ body.lore-mode {
 }
 .lore-mode .title,
 .lore-mode #status,
+.lore-mode #score,
 .lore-mode .meter-label,
 .lore-mode .health-label {
     color: #e8e8e8;
@@ -671,6 +672,18 @@ body.lore-mode {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+#score {
+    font-family: 'Indie Flower', cursive;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 118px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    box-sizing: border-box;
+    padding: 0 16px;
+}
 
 @keyframes winterPulse {
     0%   { background-color: #fffde3; }
@@ -858,6 +871,11 @@ body.lore-mode {
         top: 68px;
         padding: 0 70px;
         line-height: 1.4;
+    }
+    #score {
+        font-size: 14px;
+        top: 124px;
+        padding: 0 16px;
     }
     .meter-label,
     .health-label {

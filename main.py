@@ -1,8 +1,10 @@
 from random import random, shuffle
 from pyscript import when
 from pyscript.web import page
-from js import document
+from js import document, localStorage
 import asyncio
+
+HIGH_SCORE_KEY = "growAFlowerBest"
 
 
 water = 50
@@ -18,6 +20,8 @@ warmth_button_shown = False
 warmth = 50
 mystery_menu = False
 menu_open = False
+score = 0
+score_saved = False
 
 upgrades = {"decay": 0, "fertilizer": 0, "safe_zone": 0, "weather": 0}
 current_upgrade_choices = []
@@ -35,6 +39,7 @@ DIFFICULTIES = {
         "pest_drain": 3,
         "fert_threshold_start": 30,
         "fert_threshold": 70,
+        "score_mult": 1.0,
     },
     "medium": {
         "decay": 3,
@@ -45,6 +50,7 @@ DIFFICULTIES = {
         "pest_drain": 4,
         "fert_threshold_start": 30,
         "fert_threshold": 70,
+        "score_mult": 1.5,
     },
     "hard": {
         "decay": 3,
@@ -55,6 +61,7 @@ DIFFICULTIES = {
         "pest_drain": 4,
         "fert_threshold_start": 45,
         "fert_threshold": 95,
+        "score_mult": 2.0,
     },
 }
 # Active tuning. Replaced when the player picks a difficulty; defaults to easy.
@@ -68,6 +75,33 @@ def safe_zone():
     safe_min = max(35 - upgrades["safe_zone"] * 5, 15)
     safe_max = min(70 + upgrades["safe_zone"] * 5, 90)
     return safe_min, safe_max
+
+
+def final_score():
+    return round(score * settings["score_mult"])
+
+
+def get_best_score():
+    stored = localStorage.getItem(HIGH_SCORE_KEY)
+    try:
+        return int(stored) if stored is not None else 0
+    except (ValueError, TypeError):
+        return 0
+
+
+def update_score_display():
+    score_el = document.getElementById("score")
+    if score_el is not None:
+        score_el.innerHTML = f"Score: {final_score()} &nbsp;&nbsp; Best: {get_best_score()}"
+
+
+def save_high_score():
+    global score_saved
+    if score_saved:
+        return
+    score_saved = True
+    if final_score() > get_best_score():
+        localStorage.setItem(HIGH_SCORE_KEY, str(final_score()))
 
 UPGRADE_INFO = {
     "decay":      ("Slow Decay",       "Water, sunlight & warmth decay −0.5/tick per level"),
@@ -89,10 +123,11 @@ STAGES = [
 FINAL_STAGE = len(STAGES) - 1
 
 def advance_stage():
-    global growth_stage, fertilizer
+    global growth_stage, fertilizer, score
     if growth_stage < FINAL_STAGE:
         growth_stage += 1
         fertilizer = 0
+        score += 500
         grow_audio = document.getElementById("grow-audio")
         grow_audio.currentTime = 0
         grow_audio.play()
@@ -157,6 +192,7 @@ def update_status():
     global water, fertilizer, sunlight, growth_stage, dead, heat_wave_ticks, rainstorm_ticks, health, pest_active, mystery_menu, safe_min, safe_max
     if FINAL_STAGE == growth_stage or mystery_menu or menu_open:
         return
+    update_score_display()
     safe_min, safe_max = safe_zone()
     flower_image = page["#flower-image"]
     water_bar = document.getElementById("water-bar")
@@ -181,8 +217,9 @@ def update_status():
         page["#status"].innerHTML = f"🌡️ Heat wave! ({heat_wave_ticks}s remaining)"
     elif health == 0:
         dead = True
+        save_high_score()
         flower_image.src = "flower/DeadPlant.png"
-        page["#status"].innerHTML = "Plant has died due to poor health❤️. Restart to try again."
+        page["#status"].innerHTML = f"Plant has died due to poor health❤️. Score: {final_score()} (Best: {get_best_score()}). Restart to try again."
     elif pest_active and not dead:
         page["#status"].innerHTML = "Pests are active🐛! Add sunlight to burn them off."
     elif rainstorm_ticks > 0:
@@ -211,12 +248,13 @@ def update_status():
     
     if water <= 20 or sunlight <= 20 or water >= 80 or sunlight >= 80 or (warmth <= 20 or warmth >= 80):
         dead = True
+        save_high_score()
         flower_image.src = "flower/DeadPlant.png"
         document.body.classList.remove("heat-wave", "rainstorm", "winter")
-        page["#status"].innerHTML = "Plant has died. Restart to try again."
+        page["#status"].innerHTML = f"Plant has died. Score: {final_score()} (Best: {get_best_score()}). Restart to try again."
         if growth_stage == 0:
             flower_image.src = STAGES[0]
-            page["#status"].innerHTML = "Plant has failed to germinate"
+            page["#status"].innerHTML = f"Plant has failed to germinate. Score: {final_score()} (Best: {get_best_score()})"
     else:
         flower_image.src = STAGES[growth_stage]
 @when("click", "#water-btn")
@@ -258,7 +296,8 @@ def on_fertilizer(event):
             document.body.classList.add("spring")
             control.style.display = "none"
             page["#flower-image"].src = STAGES[FINAL_STAGE]
-            page["#status"].innerHTML = "🌸 Your flower has fully bloomed! You win!"
+            save_high_score()
+            page["#status"].innerHTML = f"🌸 Your flower has fully bloomed! You win! Score: {final_score()} (Best: {get_best_score()})"
             from js import launchConfetti
             launchConfetti()
 
@@ -323,7 +362,7 @@ async def decay_loop():
     warmth_btn = document.getElementById("warmth-btn")
     warmth_row = document.getElementById("warmth-row")
 
-    global water, fertilizer, sunlight, health, heat_wave_ticks, rainstorm_ticks, pest_active, warmth_button_shown, warmth
+    global water, fertilizer, sunlight, health, heat_wave_ticks, rainstorm_ticks, pest_active, warmth_button_shown, warmth, score
     while True:
         await asyncio.sleep(1)
         
@@ -371,6 +410,13 @@ async def decay_loop():
         if growth_stage < FINAL_STAGE:
             fertilizer = min(fertilizer + settings["fert_gen"] + upgrades["fertilizer"], 100)
         sunlight = max(sunlight - decay, 0)
+        score += 1
+        s_min, s_max = safe_zone()
+        meters_ok = s_min <= water <= s_max and s_min <= sunlight <= s_max
+        if growth_stage >= 3:
+            meters_ok = meters_ok and s_min <= warmth <= s_max
+        if meters_ok:
+            score += 5
         update_status()
 
 
