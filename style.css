@@ -243,8 +243,8 @@ body.lore-mode {
     font-family: 'Walter Turncoat';
     top: 50%;
     left: 50%;
-    width: 100%;
-    height: 100%;
+    width: 100vh;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
@@ -306,8 +306,8 @@ body.lore-mode {
     font-family: 'Walter Turncoat';
     top: 50%;
     left: 50%;
-    width: 100%;
-    height: 100%;
+    width: 100vh;
+    height: 100vh ;
     background: rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
@@ -354,8 +354,8 @@ body.lore-mode {
     font-family: 'Walter Turncoat', cursive;
     top: 50%;
     left: 50%;
-    width: 100%;
-    height: 100%;
+    width: 100vh;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
