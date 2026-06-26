@@ -513,10 +513,18 @@ body.lore-mode {
     box-shadow: 0 7px 16px rgba(0, 120, 0, 0.35);
     transform: translate(-50%, -56%);
 }
+html {
+    height: 100%;
+    overscroll-behavior: none;
+}
 .container {
     background-color: #fffde3;
     cursor:url('music and images/cursor 32px.png'), auto;
+    position: fixed;
+    inset: 0;
     overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
 }
 .buttons-container {
     position: absolute;
@@ -677,8 +685,8 @@ body.lore-mode {
     position: absolute;
 }
 #flower-image {
-    width: 350px;
-    height: 350px;
+    width: min(330px, 38vh);
+    height: min(330px, 38vh);
     object-fit: contain;
     object-position: bottom center;
     display: block;
@@ -892,7 +900,6 @@ body.lore-mode {
 
     /* Main game page */
     .container {
-        height: 100vh;
         overflow: hidden;
     }
     .title {
@@ -903,8 +910,8 @@ body.lore-mode {
         top: 40%;
     }
     #flower-image {
-        width: 200px;
-        height: 200px;
+        width: min(200px, 32vh);
+        height: min(200px, 32vh);
     }
     #status {
         font-size: 17px;
