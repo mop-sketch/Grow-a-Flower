@@ -864,9 +864,15 @@ html {
         padding: 15px;
     }
     .fertilizer-notification {
-        top: 10px;
-        width: 250px;
-        height: 250px;
+        /* .flower has a transform, so this fixed element is positioned relative
+           to the flower box. Anchor the ring's bottom to the plant's base
+           (bottom:0) and make it a circle slightly larger than the plant image.
+           Its bottom can never drop below the plant base, which already sits
+           15px above the buttons, so the ring never reaches the button bar. */
+        top: auto;
+        bottom: 0;
+        width: min(190px, 26vh);
+        height: min(190px, 26vh);
     }
     .heading {
         font-size: 36px;
@@ -907,11 +913,18 @@ html {
         letter-spacing: 2px;
     }
     .flower {
-        top: 40%;
+        /* Anchor the flower just above the buttons instead of centering it by
+           percentage. The buttons sit centered at 60%, so their top edge is
+           0.60H - 45px; anchoring the flower's bottom at 0.60H - 60px keeps a
+           constant ~15px gap above them on any viewport height. Capping the
+           image size (below) stops the plant growing up into the score text. */
+        top: auto;
+        bottom: calc(40% + 60px);
+        transform: translateX(-50%);
     }
     #flower-image {
-        width: min(200px, 32vh);
-        height: min(200px, 32vh);
+        width: min(170px, 24vh);
+        height: min(170px, 24vh);
     }
     #status {
         font-size: 17px;
